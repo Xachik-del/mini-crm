@@ -7,7 +7,6 @@ use App\Http\Requests\TaskUpdateRequest;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class TaskController extends Controller
 {
@@ -20,7 +19,6 @@ class TaskController extends Controller
     public function index(Request $request): JsonResponse
     {
         $user = $request->user();
-
         $query = Task::query()->where('user_id', $user->id);
 
         if ($request->has('status')) {
@@ -46,7 +44,7 @@ class TaskController extends Controller
         $data['user_id'] = $user->id;
 
         if (!isset($data['status'])) {
-            $data['status'] = 'new';
+            $data['status'] = Task::STATUS_NEW;
         }
 
         $task = Task::query()->create($data);
